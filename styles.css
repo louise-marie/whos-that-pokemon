@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1000px;
+  width: 100%;
+  height: 100%;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 93%;
+  flex-direction: column;
+}
+
+.pokemon-quiz {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.quiz-title {
+  font-size: 24px;
+  text-align: center;
+}
+
+#pokemonImage {
+  background-color: #fff;
+  width: 200px;
+  height: 200px;
+  margin: 0 0 8px 0;
+}
+
+.pokemon__image img {
+  width: 200px;
+}
+
+.sprite-silhouette .sprite {
+  filter: contrast(0%) brightness(50%);
+}
+
+.pokemon__input {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+.pokemon__input h1 {
+  font-family: 'Poppins', sans-serif;
+  text-transform: capitalize;
+}
+
+#pokemonInput {
+  border-radius: 5px;
+  background: rgb(249, 250, 250);
+  border: 1px solid rgb(181, 189, 196);
+  font-size: 24px;
+  height: 40px;
+  line-height: 24px;
+  padding: 7px 8px;
+  color: rgb(8, 9, 10);
+  box-shadow: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+#pokemonInput:focus {
+  background-color: #fff;
+  border-color: #3b49df;
+  box-shadow: 1px 1px 0 #3b49df;
+}
+
+button {
+  display: inline-block;
+  outline: 0;
+  cursor: pointer;
+  border: 2px solid #000;
+  border-radius: 3px;
+  color: #fff;
+  background: #000;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  padding: 12px 20px;
+  text-align: center;
+  transition-duration: 0.15s;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+button:hover {
+  color: #000;
+  background: rgb(255, 218, 87);
+}
+
+#btn-tryAgain {
+  display: none;
+}
+
+.pokemon-name span {
+  text-transform: capitalize;
+}
+
+.results-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100%;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  font-size: 12px;
+  align-items: center;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.icon {
+  width: 18px;
+  height: auto;
+}
+
+.credit {
+  display: flex;
+}
+
+.credit img {
+  padding-right: 8px;
+}
+
+.credit strong {
+  padding-left: 4px;
+}
+
+/* The Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  text-align: center;
+}
+
+.modal-sprite {
+  width: 250px;
+}
+
+/* Close Button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.is-desktop {
+  display: none;
+}
+
+@media only screen and (min-width: 426px) {
+  .container {
+    display: none;
+  }
+
+  .is-desktop {
+    display: block;
+  }
+}

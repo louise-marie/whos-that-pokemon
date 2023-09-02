@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Who's that pokemon?!</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <div class="pokemon-quiz">
+                <h1 class="quiz-title">Who's that pokemon?!</h1>
+                <div id="pokemonImage" class="pokemon__image sprite-silhouette" width="250">
+                </div>
+                <div class="pokemon__input">
+                    <input type="text" id="pokemonInput" onpaste="return false;">
+                    <button id="submit">enter</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <p class="disclaimer">Pokémon info & images: <strong><a href="https://pokeapi.co/">PokéAPI</a></strong>.</p>
+            <p class="credit">
+                <a href="https://github.com/louise-marie"><img class="icon icon-github" src="/assets/icons/github.svg" alt="GitHub Icon"></a>
+                <a href="https://www.linkedin.com/in/loumarii-donato/"><img class="icon icon-linkedin" src="/assets/icons/linkedin.svg" alt="LinkedIn Icon"> </a>
+            </p>
+        </div>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="results-wrapper">
+                <div id="pokemonResult"></div>
+                <button id="btn-tryAgain">Try Again?</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="is-desktop">
+        <h1>desktop version in progress haha</h1>
+    </div>
+
+    <script src="/scripts.js"></script>
+</body>
+</html>
