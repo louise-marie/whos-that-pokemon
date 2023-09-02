@@ -1,6 +1,7 @@
 # Who's that Pokémon?!
 
-Used PokeAPI for the Pokémon data.  TO DO:  Desktop design & layout Polished design
+A simple JS project based on the "Who's that Pokémon?!" game.
+Used PokeAPI for the Pokémon data.
 
 **TO DO:**
 - [ ] Desktop design & layout
