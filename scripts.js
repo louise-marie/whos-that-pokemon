@@ -27,7 +27,7 @@ async function getRandomPokemon() {
     pokemonSprite = pokemonData.sprites.front_default;
 
     const pokemonImageHtml = document.getElementById('pokemonImage');
-    pokemonImageHtml.innerHTML = `<img class="sprite" src="${pokemonSprite}">`;
+    pokemonImageHtml.innerHTML = `<img id="pokeSprite" class="sprite" src="${pokemonSprite}" draggable="false">`;
 
     const submitButton = document.getElementById('submit');
     let pokemonInput = document.getElementById('pokemonInput');
@@ -115,3 +115,23 @@ closeButton.addEventListener('click', closeModalAndRestart);
 tryAgainModalButton.addEventListener('click', closeModalAndRestart);
 
 getRandomPokemon();
+
+function absorbEvent_(event) {
+  var e = event || window.event;
+  e.preventDefault && e.preventDefault();
+  e.stopPropagation && e.stopPropagation();
+  e.cancelBubble = true;
+  e.returnValue = false;
+  return false;
+}
+
+function preventLongPressMenu(node) {
+  node.ontouchstart = absorbEvent_;
+  node.ontouchmove = absorbEvent_;
+  node.ontouchend = absorbEvent_;
+  node.ontouchcancel = absorbEvent_;
+}
+
+function init() {
+  preventLongPressMenu(document.getElementById('pokeSprite'));
+}
