@@ -5,10 +5,11 @@ let pokemonPokedexEntry;
 let pokemonGenus;
 let pokemonFlavorText;
 let pokemonSprite;
+let pokemonData;
+const loadingAnimation = document.getElementById('loadingScreen');
 
 async function getRandomPokemon() {
   try {
-    const loadingAnimation = document.getElementById('loadingScreen');
     loadingAnimation.style.display = 'block';
 
     const selectedGenerations = getSelectedGenerations();
@@ -25,7 +26,7 @@ async function getRandomPokemon() {
     }
 
     let randomPokemonName;
-    let pokemonData = null; // Initialize to null
+    pokemonData = null; // Initialize to null
 
     while (!pokemonData) {
       const randomIndex = Math.floor(Math.random() * filteredResults.length);
@@ -75,7 +76,7 @@ async function getRandomPokemon() {
       }
     }
   } catch (error) {
-    console.log('Error:', error.message);
+    console.log('Error:', error);
   }
 }
 
@@ -120,7 +121,6 @@ async function fetchPokemonNames(selectedGenerations) {
       for (const species of pokemon_species) {
         pokemonNames.push(species.name);
       }
-      console.log = console.log.bind(console);
     } catch (error) {
       // Handle any errors here (optional)
       console.error('Error fetching Pokémon data:', error.message);
@@ -134,14 +134,18 @@ function resetPokemonInformation() {
   let pokemonImageHtml = document.getElementById('pokemonImage');
   let result = document.getElementById('pokemonResult');
   let pokemonInput = document.getElementById('pokemonInput');
-
-  pokemonImageHtml.innerHTML = ''; // Clear the Pokemon imag
+  
+  pokemonImageHtml.innerHTML = ''; // Clear the Pokémon image
   result.innerHTML = ''; // Clear the result message
   pokemonInput.value = '';
   tryAgainButton.style.display = 'none';
   pokemonImageHtml.classList.add('sprite-silhouette');
   noticeMessage.style.display = 'none';
+  
+  // Check if the loadingAnimation element exists before modifying its style
+  loadingAnimation.style.display = 'block'; // Hide the loading animation when resetting
 }
+
 
 // Get the modal element and buttons
 const modal = document.getElementById('myModal');
