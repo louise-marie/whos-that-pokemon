@@ -8,19 +8,21 @@ let pokemonSprite;
 
 async function getRandomPokemon() {
   try {
-    const response = await fetch(
-      'https://pokeapi.co/api/v2/pokemon?limit=1000'
-    );
-    const data = await response.json();
-    const { results } = data;
+    const selectedGenerations = getSelectedGenerations();
 
-    const filteredResults = results.filter(
-      (pokemon) => !pokemon.name.includes('-')
-    );
+    // Fetch a list of Pokémon names based on selected generations
+    const pokemonNames = await fetchPokemonNames(selectedGenerations);
 
-    const randomIndex = Math.floor(Math.random() * filteredResults.length);
-    const randomPokemon = filteredResults[randomIndex];
-    const pokemonResponse = await fetch(randomPokemon.url);
+    if (pokemonNames.length === 0) {
+      console.log('No Pokémon found for selected generations');
+      return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * pokemonNames.length);
+    const randomPokemonName = pokemonNames[randomIndex];
+    const pokemonResponse = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/${randomPokemonName}`
+    );
     const pokemonData = await pokemonResponse.json();
 
     const pokemonName = pokemonData.name;
@@ -34,7 +36,7 @@ async function getRandomPokemon() {
 
     // Remove previous event listener before adding a new one
     submitButton.addEventListener('click', handleClick);
-  
+
     function handleClick() {
       const enteredPokemonName = pokemonInput.value.trim().toLowerCase();
 
@@ -56,6 +58,49 @@ async function getRandomPokemon() {
   }
 }
 
+// Declare the checkboxes variable in the outer scope
+const checkboxes = document.querySelectorAll('.pokemon__filter input[type="checkbox"]');
+const noticeMessage = document.getElementById('noticeMessage');
+
+function getSelectedGenerations() {
+  const selectedGenerations = [];
+
+  checkboxes.forEach(checkbox => {
+    if (checkbox.checked) {
+      selectedGenerations.push(parseInt(checkbox.value));
+    }
+  });
+
+  return selectedGenerations;
+}
+
+// Add an event listener to the checkboxes to detect changes
+checkboxes.forEach(checkbox => {
+  checkbox.addEventListener('change', () => {
+    // Display a notice or message
+    noticeMessage.textContent = 'Changes will take effect on the next Pokémon!';
+  });
+});
+
+
+
+// Function to fetch Pokémon names based on selected generations
+async function fetchPokemonNames(selectedGenerations) {
+  const pokemonNames = [];
+
+  for (const generation of selectedGenerations) {
+    const speciesResponse = await fetch(`https://pokeapi.co/api/v2/generation/${generation}`);
+    const speciesData = await speciesResponse.json();
+    const { pokemon_species } = speciesData;
+
+    for (const species of pokemon_species) {
+      pokemonNames.push(species.name);
+    }
+  }
+
+  return pokemonNames;
+}
+
 function resetPokemonInformation() {
   let pokemonImageHtml = document.getElementById('pokemonImage');
   let result = document.getElementById('pokemonResult');
@@ -66,6 +111,7 @@ function resetPokemonInformation() {
   pokemonInput.value = '';
   tryAgainButton.style.display = 'none';
   pokemonImageHtml.classList.add('sprite-silhouette');
+  noticeMessage.textContent = '';
 }
 
 // Get the modal element and buttons
@@ -81,7 +127,6 @@ function showModal(resultMessage) {
     <h2 class="pokemon-name">${resultMessage}</h2>
   `;
   tryAgainModalButton.style.display = 'block';
-  console.log('modal open');
 }
 
 async function displayResult(pokemonName, isCorrect) {
@@ -135,3 +180,5 @@ function preventLongPressMenu(node) {
 function init() {
   preventLongPressMenu(document.getElementById('pokeSprite'));
 }
+
+
