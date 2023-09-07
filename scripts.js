@@ -8,28 +8,48 @@ let pokemonSprite;
 
 async function getRandomPokemon() {
   try {
-    const selectedGenerations = getSelectedGenerations();
+    const loadingAnimation = document.getElementById('loadingScreen');
+    loadingAnimation.style.display = 'block';
 
+    const selectedGenerations = getSelectedGenerations();
     // Fetch a list of Pokémon names based on selected generations
     const pokemonNames = await fetchPokemonNames(selectedGenerations);
 
-    if (pokemonNames.length === 0) {
+    const filteredResults = pokemonNames.filter(
+      (pokemon) => !pokemon.includes('-')
+    );
+
+    if (filteredResults.length === 0) {
       console.log('No Pokémon found for selected generations');
       return;
     }
 
-    const randomIndex = Math.floor(Math.random() * pokemonNames.length);
-    const randomPokemonName = pokemonNames[randomIndex];
-    const pokemonResponse = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${randomPokemonName}`
-    );
-    const pokemonData = await pokemonResponse.json();
+    let randomPokemonName;
+    let pokemonData = null; // Initialize to null
+
+    while (!pokemonData) {
+      const randomIndex = Math.floor(Math.random() * filteredResults.length);
+      randomPokemonName = filteredResults[randomIndex];
+
+      const pokemonResponse = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${randomPokemonName}`
+      );
+
+      if (pokemonResponse.status === 404) {
+        console.log(`Pokémon ${randomPokemonName} not found, retrying...`);
+      } else if (!pokemonResponse.ok) {
+        throw new Error('Failed to fetch Pokémon data');
+      } else {
+        pokemonData = await pokemonResponse.json();
+      }
+    }
 
     const pokemonName = pokemonData.name;
     pokemonSprite = pokemonData.sprites.front_default;
 
     const pokemonImageHtml = document.getElementById('pokemonImage');
     pokemonImageHtml.innerHTML = `<img id="pokeSprite" class="sprite" src="${pokemonSprite}" draggable="false">`;
+    loadingAnimation.style.display = 'none';
 
     const submitButton = document.getElementById('submit');
     let pokemonInput = document.getElementById('pokemonInput');
@@ -47,7 +67,8 @@ async function getRandomPokemon() {
 
       submitButton.removeEventListener('click', handleClick);
 
-      if (enteredPokemonName === pokemonName) {
+      // Check if enteredPokemonName contains the core name of the fetched Pokémon
+      if (pokemonName.toLowerCase().includes(enteredPokemonName)) {
         displayResult(pokemonName, true);
       } else {
         displayResult(pokemonName, false);
@@ -59,13 +80,15 @@ async function getRandomPokemon() {
 }
 
 // Declare the checkboxes variable in the outer scope
-const checkboxes = document.querySelectorAll('.pokemon__filter input[type="checkbox"]');
+const checkboxes = document.querySelectorAll(
+  '.pokemon__filter input[type="checkbox"]'
+);
 const noticeMessage = document.getElementById('noticeMessage');
 
 function getSelectedGenerations() {
   const selectedGenerations = [];
 
-  checkboxes.forEach(checkbox => {
+  checkboxes.forEach((checkbox) => {
     if (checkbox.checked) {
       selectedGenerations.push(parseInt(checkbox.value));
     }
@@ -75,26 +98,32 @@ function getSelectedGenerations() {
 }
 
 // Add an event listener to the checkboxes to detect changes
-checkboxes.forEach(checkbox => {
+checkboxes.forEach((checkbox) => {
   checkbox.addEventListener('change', () => {
     // Display a notice or message
-    noticeMessage.textContent = 'Changes will take effect on the next Pokémon!';
+    noticeMessage.style.display = 'grid';
   });
 });
-
-
 
 // Function to fetch Pokémon names based on selected generations
 async function fetchPokemonNames(selectedGenerations) {
   const pokemonNames = [];
 
   for (const generation of selectedGenerations) {
-    const speciesResponse = await fetch(`https://pokeapi.co/api/v2/generation/${generation}`);
-    const speciesData = await speciesResponse.json();
-    const { pokemon_species } = speciesData;
+    try {
+      const speciesResponse = await fetch(
+        `https://pokeapi.co/api/v2/generation/${generation}`
+      );
+      const speciesData = await speciesResponse.json();
+      const { pokemon_species } = speciesData;
 
-    for (const species of pokemon_species) {
-      pokemonNames.push(species.name);
+      for (const species of pokemon_species) {
+        pokemonNames.push(species.name);
+      }
+      console.log = console.log.bind(console);
+    } catch (error) {
+      // Handle any errors here (optional)
+      console.error('Error fetching Pokémon data:', error.message);
     }
   }
 
@@ -111,7 +140,7 @@ function resetPokemonInformation() {
   pokemonInput.value = '';
   tryAgainButton.style.display = 'none';
   pokemonImageHtml.classList.add('sprite-silhouette');
-  noticeMessage.textContent = '';
+  noticeMessage.style.display = 'none';
 }
 
 // Get the modal element and buttons
@@ -180,5 +209,3 @@ function preventLongPressMenu(node) {
 function init() {
   preventLongPressMenu(document.getElementById('pokeSprite'));
 }
-
-

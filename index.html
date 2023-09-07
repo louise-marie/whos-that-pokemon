@@ -15,6 +15,13 @@
             <div class="pokemon-quiz">
                 <h1 class="quiz-title">Who's that Pokémon?!</h1>
                 <div id="pokemonImage" class="pokemon__image sprite-silhouette" width="250">
+                    <div id="loadingScreen" style="display: none;">
+                        <div id="loadingAnimation">
+                        <!-- Add your loading animation or images here -->
+                        <img src="/assets/loading.gif" alt="Loading...">
+                        </div>
+                    </div>
+                    <!-- Rest of your Pokémon image content goes here -->
                 </div>
                 <div class="pokemon__filter">
                     <div class="pokemon__filter-gen-1 checkbox-wrapper-10">
@@ -54,19 +61,19 @@
                         <label class="tgl-btn" for="gen-9" data-tg-off="Gen IX" data-tg-on="Gen IX"></label>
                     </div>
                 </div>
-                <div id="noticeMessage"></div>
+                <div id="noticeMessage" class="notice">Changes will take effect on the next Pokémon.</div>
                 <div class="pokemon__input">
                     <input type="text" id="pokemonInput" onpaste="return false;">
                     <button id="submit">enter</button>
                 </div>
             </div>
-        </div>
-        <div class="footer">
-            <p class="disclaimer">Pokémon info & images: <strong><a href="https://pokeapi.co/">PokéAPI</a></strong></p>
-            <p class="credit">
-                <a href="https://github.com/louise-marie"><img class="icon icon-github" src="/assets/icons/github.svg" alt="GitHub Icon"></a>
-                <a href="https://www.linkedin.com/in/loumarii-donato/"><img class="icon icon-linkedin" src="/assets/icons/linkedin.svg" alt="LinkedIn Icon"></a>
-            </p>
+            <div class="footer">
+                <p class="disclaimer">Pokémon info & images: <strong><a href="https://pokeapi.co/">PokéAPI</a></strong></p>
+                <p class="credit">
+                    <a href="https://github.com/louise-marie"><img class="icon icon-github" src="/assets/icons/github.svg" alt="Github - Louise Donato"></a>
+                    <a href="https://www.linkedin.com/in/loumarii-donato/"><img class="icon icon-linkedin" src="/assets/icons/linkedin.svg" alt="LinkedIn - Louise Donato"></a>
+                </p>
+            </div>
         </div>
     </div>
     <div id="myModal" class="modal">
@@ -77,10 +84,6 @@
                 <button id="btn-tryAgain">Try Again?</button>
             </div>
         </div>
-    </div>
-
-    <div class="is-desktop">
-        <h1>desktop version in progress haha</h1>
     </div>
 
     <script src="/scripts.js"></script>
