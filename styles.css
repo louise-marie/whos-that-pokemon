@@ -384,3 +384,13 @@ button:hover {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+#skip {
+  cursor: pointer;
+  text-align: center;
+  padding: 4px 0 0;
+}
+
+#skip:hover {
+  text-decoration: underline;
+}
