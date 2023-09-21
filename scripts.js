@@ -6,6 +6,7 @@ let pokemonGenus;
 let pokemonFlavorText;
 let pokemonSprite;
 let pokemonData;
+let pokemonName;
 const loadingAnimation = document.getElementById('loadingScreen');
 
 async function getRandomPokemon() {
@@ -45,7 +46,7 @@ async function getRandomPokemon() {
       }
     }
 
-    const pokemonName = pokemonData.name;
+    pokemonName = pokemonData.name;
     pokemonSprite = pokemonData.sprites.front_default;
 
     const pokemonImageHtml = document.getElementById('pokemonImage');
@@ -70,9 +71,9 @@ async function getRandomPokemon() {
 
       // Check if enteredPokemonName contains the core name of the fetched Pokémon
       if (pokemonName.toLowerCase().includes(enteredPokemonName)) {
-        displayResult(pokemonName, true);
+        displayResult(true, false);
       } else {
-        displayResult(pokemonName, false);
+        displayResult(false, false);
       }
     }
   } catch (error) {
@@ -162,21 +163,26 @@ function showModal(resultMessage) {
   tryAgainModalButton.style.display = 'block';
 }
 
-async function displayResult(pokemonName, isCorrect) {
-  let resultMessage = '';
-  let pokemonImageHtml = document.getElementById('pokemonImage');
+async function displayResult(isCorrect, isSkip) {
+  let resultMessage = isCorrect
+    ? `You're right! It's <span>${pokemonName}</span>!`
+    : `Aww... It's <span>${pokemonName}</span>!`;
 
-  if (isCorrect) {
-    resultMessage = `You're right! It's <span>${pokemonName}</span>!`;
-  } else {
+  if (isSkip) {
     resultMessage = `Aww... It's <span>${pokemonName}</span>!`;
   }
 
+  const pokemonImageHtml = document.getElementById('pokemonImage');
   pokemonImageHtml.classList.remove('sprite-silhouette');
 
-  // Show the modal with the result message
   showModal(resultMessage);
 }
+
+const skipButton = document.getElementById('skip');
+
+skipButton.addEventListener('click', () => {
+  displayResult(false, true);
+})
 
 // Function to close the modal, reset the quiz, and get a new random Pokémon
 function closeModalAndRestart() {
